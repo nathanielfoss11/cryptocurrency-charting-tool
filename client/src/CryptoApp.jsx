@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import Graph from './components/Graph.jsx'
 import Chart from 'chart.js';
 
 class CryptoApp extends React.Component {
@@ -27,11 +26,10 @@ class CryptoApp extends React.Component {
     let date = []
     let history = this.state.priceHistory
     for(let key in history) {
+      let dollarConversion = '$' + history[key].toFixed(2);
       price.push(history[key])
       date.push(key)
     }
-    console.log(price);
-    console.log(date);
     let ctx = document.getElementById("myChart");
     let myChart = new Chart(ctx, {
       type: 'line',
@@ -39,6 +37,7 @@ class CryptoApp extends React.Component {
         labels: date,
         datasets: [
           { 
+            label: 'Bitcoin',
             data: price,
           }
         ]
@@ -47,13 +46,11 @@ class CryptoApp extends React.Component {
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero: true,
                 }
             }]
         },
       }
     });
-    // ReactDOM.render(<Graph price={price} date={date} />, document.getElementById('graph'))
   }
 
   render() {
@@ -62,7 +59,7 @@ class CryptoApp extends React.Component {
         <h1>Cryptocurrency Charting Tool</h1>
         <h2>30 Day Trend</h2>
         <div id='graph'>
-          <canvas id="myChart" width="400" height="400"></canvas>
+          <canvas id="myChart"></canvas>
         </div>
       </div>
     );
